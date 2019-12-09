@@ -1,13 +1,33 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+
+const API_URL = 'https://api.discogs.com/releases/249504'
 
 class Search extends Component {
     state = {
         query: '',
+        results: []
+    }
+
+    getInfo = () => {
+        axios.get(`${API_URL}?prefix=${this.state.query}&limit=7`)
+            .then((res) => {
+                console.log(res.data);
+                this.setState({
+                    results: res.data
+                })
+            })
     }
 
     handleInputChange = () => {
         this.setState({
             query: this.search.value
+        }, () => {
+            if( this.state.query && this.state.query.length > 1) {
+                if(this.state.query.length % 2 === 0) {
+                    this.getInfo()
+                }
+            }
         })
     }
     
