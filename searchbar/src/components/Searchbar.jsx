@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import Suggestions from './Suggestions';
 
 const API_URL = 'https://api.discogs.com/releases/249504'
 
@@ -12,9 +13,9 @@ class Search extends Component {
     getInfo = () => {
         axios.get(`${API_URL}?prefix=${this.state.query}&limit=7`)
             .then((res) => {
-                console.log(res.data);
+
                 this.setState({
-                    results: res.data
+                    results: res.data.companies
                 })
             })
     }
@@ -23,6 +24,7 @@ class Search extends Component {
         this.setState({
             query: this.search.value
         }, () => {
+            
             if( this.state.query && this.state.query.length > 1) {
                 if(this.state.query.length % 2 === 0) {
                     this.getInfo()
@@ -39,7 +41,7 @@ class Search extends Component {
                     ref={input => this.search = input}
                     onChange={this.handleInputChange}
                 />
-                <p>{this.state.query}</p>
+                <Suggestions results={this.state.results}/>
             </form>
         )
     }
