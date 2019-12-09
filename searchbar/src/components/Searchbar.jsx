@@ -11,6 +11,7 @@ class Search extends Component {
     }
 
     getInfo = () => {
+        
         axios.get(`${API_URL}?prefix=${this.state.query}&limit=7`)
             .then((res) => {
 
@@ -24,11 +25,17 @@ class Search extends Component {
         this.setState({
             query: this.search.value
         }, () => {
-            
-            if( this.state.query && this.state.query.length > 1) {
-                if(this.state.query.length % 2 === 0) {
-                    this.getInfo()
-                }
+
+            const { query } = this.state;
+
+            if (this.timeout) {
+                
+                clearTimeout(this.timeout);
+            }
+
+            if (query && query.length > 1) {
+
+                this.timeout = setTimeout(this.getInfo, 700);
             }
         })
     }

@@ -2,10 +2,8 @@ import React from 'react';
 
 const Suggestions = (props) => {
 
-    console.log('props inside suggestions ', props)
-
     const options = props.results.map((res, id) => (
-        <li key={id}>
+        <li key={`companies_${id}`}>
           {res.name}
         </li>
     ))
